@@ -1,2 +1,2 @@
 #!/bin/bash
-source venv/bin/activate && python run.py
+source venv/bin/activate && python3 run.py
