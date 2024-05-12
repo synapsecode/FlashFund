@@ -45,3 +45,20 @@ def wallet_withdraw(wtype, id, amount):
 		'message': 'OK',
 		'balance': wallet.balance,
 	}), 200
+
+
+@main.route('/get_wallet_balance/<wtype>/<id>', methods=['POST'])
+def get_wallet_balance(wtype, id):
+	wallet = None
+	if(wtype == 'business'):
+		wallet = VirtualWallet.query.filter_by(business_id=id).first()
+	else:
+		wallet = VirtualWallet.query.filter_by(investor_id=id).first()
+	if(wallet == None):
+		return jsonify({
+			'message': 'Wallet not found'
+		}), 400
+	return jsonify({
+		'message': 'OK',
+		'balance': wallet.balance,
+	}), 200

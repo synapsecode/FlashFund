@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/backend/auth.dart';
+import 'package:frontend/backend/wallet.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
+import 'package:frontend/main.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -65,7 +68,10 @@ class _RepayListingPageState extends State<RepayListingPage> {
               text: 'Finish Repayment',
               buttonColor: Colors.purple,
               width: 400,
-              onTap: () {},
+              onTap: () {
+                // final id = gpc.read(businessUserIDProvider)!;
+                // VirtualWallet.withdraw(type: 'business', amount: 1, id: id);
+              },
               textColor: Colors.white,
             ).addBottomMargin(15),
           ],

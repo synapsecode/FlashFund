@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/backend/auth.dart';
+import 'package:frontend/backend/wallet.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/screens/investor/currentroadshows.dart';
 import 'package:intl/intl.dart';
 
@@ -109,7 +112,20 @@ class _IPOWidgetState extends State<IPOWidget> {
                   .addRightMargin(10),
               Text(
                   "Price: ₹${NumberFormat('#,##,###').format(units * double.parse(widget.model.getValueOfEachShare))}"),
-              ElevatedButton(onPressed: () {}, child: Text('Place Order'))
+              ElevatedButton(
+                      onPressed: () async {
+                        final amount = (units *
+                                double.parse(widget.model.getValueOfEachShare))
+                            .toInt();
+                        ;
+                        final id = gpc.read(investorUserIDProvider)!;
+                        await VirtualWallet.withdraw(
+                          type: 'investor',
+                          amount: amount,
+                          id: id,
+                        );
+                      },
+                      child: Text('Place Order'))
                   .addLeftMargin(20),
             ],
           ),

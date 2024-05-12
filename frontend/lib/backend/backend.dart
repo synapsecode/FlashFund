@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/backend/auth.dart';
+import 'package:frontend/backend/wallet.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/routes.dart';
 import 'package:go_router/go_router.dart';
@@ -17,9 +18,11 @@ loadAllControllers() async {
   } else {
     if (business_user_id != null) {
       gpc.read(businessUserIDProvider.notifier).state = business_user_id;
+      await VirtualWallet.getBalance(type: 'business', id: business_user_id);
       navigatorKey.currentState!.context.go('/business/dashboard');
     } else {
-      gpc.read(investorUserIDProvider.notifier).state = investor_user_id;
+      gpc.read(investorUserIDProvider.notifier).state = investor_user_id!;
+      await VirtualWallet.getBalance(type: 'investor', id: investor_user_id);
       navigatorKey.currentState!.context.go('/investor/dashboard');
     }
   }
@@ -30,5 +33,6 @@ logout(BuildContext context) async {
   await prefs.clear();
   gpc.invalidate(businessUserIDProvider);
   gpc.invalidate(investorUserIDProvider);
+  gpc.invalidate(currentWalletBalance);
   context.go('/');
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/backend/auth.dart';
+import 'package:frontend/backend/backend.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
@@ -65,6 +66,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
       password: passwordC.value.text,
     );
     if (success) {
+      await loadAllControllers();
       context.push('/business/dashboard');
     } else {
       print('Login Failed!');

@@ -1,11 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:frontend/backend/auth.dart';
 import 'package:frontend/backend/backend.dart';
+import 'package:frontend/backend/wallet.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
+import 'package:frontend/main.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
@@ -23,8 +29,29 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
   bool isCurrentListingVisible = true;
   bool currentListingAccepted = false;
 
+  Timer? autoSetStateTimer;
+
+  @override
+  void initState() {
+    final t = Timer.periodic(Duration(seconds: 5), (timer) {
+      autoSetStateTimer = timer;
+      print('autoSetStateTimer invoked');
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    autoSetStateTimer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final cBal = gpc.read(currentWalletBalance);
+
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -97,12 +124,10 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                       child: Text('notifications'),
                     ).addLeftMargin(10),
                     ElevatedButton(
-                      onPressed: () {
-                        print('ddd');
-                        showDialog(
+                      onPressed: () async {
+                        final z = await showDialog(
                           context: context,
                           builder: (context) {
-                            print('ddd');
                             return AlertDialog(
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -115,7 +140,18 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                                     text: 'Purchase',
                                     buttonColor: Colors.purple,
                                     width: 400,
-                                    onTap: () {},
+                                    onTap: () async {
+                                      final id =
+                                          gpc.read(businessUserIDProvider)!;
+                                      await VirtualWallet.deposit(
+                                        type: 'business',
+                                        amount: int.tryParse(
+                                                rechargeAmountC.value.text) ??
+                                            0,
+                                        id: id,
+                                      );
+                                      Navigator.pop(context, 'purchased');
+                                    },
                                     textColor: Colors.white,
                                   ),
                                 ],
@@ -123,13 +159,16 @@ class _BusinessDashboardState extends State<BusinessDashboard> {
                             );
                           },
                         );
+                        if (z == 'purchased') {
+                          setState(() {});
+                        }
                       },
                       child: Text('recharge wallet'),
                     ).addLeftMargin(10),
                   ],
                 ).addBottomMargin(30),
                 Text('balance').size(30),
-                Text("₹34,000")
+                Text("₹${NumberFormat('#,##,###').parse(cBal.toString())}")
                     .size(40)
                     .weight(FontWeight.bold)
                     .translate(0, -10, 0),
