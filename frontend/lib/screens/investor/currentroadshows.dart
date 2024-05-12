@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/backend/roadshow.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
@@ -8,8 +9,8 @@ class RoadshowModel {
   final int id;
   final String companyName;
   final String prospectusURL;
-  double companyValuation;
-  final double loanAmount;
+  int companyValuation;
+  final int loanAmount;
   final String status;
 
   double get loanPercentageAgainstValuation {
@@ -32,6 +33,17 @@ class RoadshowModel {
     required this.loanAmount,
     required this.status,
   });
+
+  factory RoadshowModel.fromMap(Map x) {
+    return RoadshowModel(
+      id: x['id'] ?? 0,
+      companyName: x['company_name'],
+      prospectusURL: 'https://css4.pub/2015/usenix/example.pdf',
+      companyValuation: x['proposed_valuation'],
+      loanAmount: x['loan_amount'],
+      status: x['status'],
+    );
+  }
 }
 
 class CurrentRoadshowsPage extends StatefulWidget {
@@ -42,24 +54,19 @@ class CurrentRoadshowsPage extends StatefulWidget {
 }
 
 class _CurrentRoadshowsPageState extends State<CurrentRoadshowsPage> {
-  List<RoadshowModel> roadshows = [
-    RoadshowModel(
-      id: 0,
-      companyName: 'Acme Corp',
-      prospectusURL: 'https://www.google.com',
-      companyValuation: 4853858585,
-      loanAmount: 240000,
-      status: 'active',
-    ),
-    RoadshowModel(
-      id: 1,
-      companyName: 'Bagmane Group',
-      prospectusURL: 'https://www.bagmane.com',
-      companyValuation: 5999858585,
-      loanAmount: 320000,
-      status: 'active-negotiation',
-    ),
-  ];
+  List<RoadshowModel> roadshows = [];
+
+  @override
+  void initState() {
+    RoadshowBackend.getAllRoadshows().then((x) {
+      if (x == null) return print('NULLLLLL');
+      setState(() {
+        roadshows = [...x];
+        setState(() {});
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

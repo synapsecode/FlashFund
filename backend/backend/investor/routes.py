@@ -72,11 +72,10 @@ def login():
 		'id': b.id
 	})
 
-@investor.route("/roadshows/<bid>")
-def roadshows(bid):
+@investor.route("/roadshows")
+def roadshows():
 	roadshows = FlashFundIPO.query.filter_by(
 		status='roadshow',
-		business_id=bid,
 	).all()
 
 	def get_company_name_by_bid(id):
