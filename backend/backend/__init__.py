@@ -13,9 +13,13 @@ def create_app(config_class=Config):
 
 	#Import all your blueprints
 	from backend.main.routes import main
+	from backend.business.routes import business
+	from backend.investor.routes import investor
 	
 	#use the url_prefix arguement if you need prefixes for the routes in the blueprint
 	app.register_blueprint(main)
+	app.register_blueprint(business, url_prefix='/business')
+	app.register_blueprint(investor, url_prefix='/investor')
 
 	return app
 

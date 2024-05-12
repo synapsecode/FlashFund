@@ -7,4 +7,4 @@ class Config:
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	PRODUCTION_MODE = False #This states whether the app runs in DEBUG MODE or not
 	PORT_NUMBER = 3000
-	HOST_NAME = '172.20.10.3'
+	HOST_NAME = '192.168.171.174'
