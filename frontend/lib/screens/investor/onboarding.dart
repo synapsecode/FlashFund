@@ -13,11 +13,13 @@ class InvestorOnboardingScreen extends StatefulWidget {
 }
 
 class _InvestorOnboardingScreenState extends State<InvestorOnboardingScreen> {
-  TextEditingController companyNameC = TextEditingController();
-  TextEditingController legalStructureC = TextEditingController();
-  TextEditingController companyAddrC = TextEditingController();
-  TextEditingController dateOfFoundingC = TextEditingController();
+  TextEditingController nameC = TextEditingController();
+  TextEditingController aadharNumber = TextEditingController();
+  TextEditingController invAddress = TextEditingController();
+  TextEditingController panDetailsC = TextEditingController();
   TextEditingController fundingStageC = TextEditingController();
+  TextEditingController emailC = TextEditingController();
+  TextEditingController passwordC = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,53 +39,52 @@ class _InvestorOnboardingScreenState extends State<InvestorOnboardingScreen> {
             Row(
               children: [
                 LableTextField(
-                  lableText: 'Company Name',
-                  controller: companyNameC,
+                  lableText: 'Investor Name',
+                  controller: nameC,
                 ).expanded(),
                 SizedBox(width: 20),
                 LableTextField(
-                  lableText: 'Legal Structure',
-                  controller: legalStructureC,
+                  lableText: 'Aadhar Number',
+                  controller: aadharNumber,
                 ).expanded(),
               ],
             ).addBottomMargin(20),
             Row(
               children: [
                 LableTextField(
-                  lableText: 'Company Address',
-                  controller: companyAddrC,
+                  lableText: 'Investor Address',
+                  controller: invAddress,
                   maxLength: 200,
                 ).expanded(),
                 SizedBox(width: 20),
                 LableTextField(
-                  lableText: 'Date of Founding',
-                  controller: dateOfFoundingC,
+                  lableText: 'PAN Details',
+                  controller: panDetailsC,
                 ).expanded(),
               ],
             ).addBottomMargin(30),
             Row(
               children: [
                 LableTextField(
-                  lableText: 'Current Funding Stage',
-                  controller: fundingStageC,
-                  isDropDown: true,
-                  dropdownList: [
-                    'Pre-Seed',
-                    'Seed',
-                    'Series A',
-                    'Series B',
-                    'Series C',
-                  ],
+                  lableText: 'Email Address',
+                  controller: emailC,
+                  maxLength: 200,
+                ).expanded(),
+                SizedBox(width: 20),
+                LableTextField(
+                  lableText: 'Password',
+                  controller: passwordC,
+                  hideInput: true,
                 ).expanded(),
               ],
-            ).addBottomMargin(0),
+            ).addBottomMargin(30),
             StandardButton(
               text: 'Continue',
               buttonColor: Colors.purple,
               width: 400,
               onTap: () {
                 //TODO: Implement Signup
-                context.push('/business/dashboard');
+                context.push('/investor/dashboard');
               },
               textColor: Colors.white,
             ).addBottomMargin(30),
