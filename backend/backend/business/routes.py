@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, jsonify
 from backend import db
-from backend.models import Business, VirtualWallet
+from backend.models import Business, FlashFundIPO, VirtualWallet
 business = Blueprint('business', __name__)
 from flask_cors import CORS
 CORS(business)
@@ -72,4 +72,24 @@ def login():
 	return jsonify({
 		'success': True,
 		'id': b.id
+	})
+
+@business.route("/create_roadshow", methods=['POST'])
+def create_roadshow():
+	data = request.json
+	if(data == None or data == ''):
+		return jsonify({
+			'error':'Invalid Request Body',
+		}), 400
+	roadshow = FlashFundIPO(
+		business_id=data['business_id'],
+		prospectus_url='https://css4.pub/2015/usenix/example.pdf',
+		valuation=data['valuation'],
+		loan_amount=data['loan_amount'],
+	)
+	db.session.add(roadshow)
+	db.session.commit()
+
+	return jsonify({
+		'success': True,
 	})

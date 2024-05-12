@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, jsonify
 from backend import db
-from backend.models import Investor, VirtualWallet
+from backend.models import Business, FlashFundIPO, Investor, VirtualWallet
 investor = Blueprint('investor', __name__)
 from flask_cors import CORS
 CORS(investor)
@@ -71,3 +71,41 @@ def login():
 		'success': True,
 		'id': b.id
 	})
+
+@investor.route("/roadshows/<bid>")
+def roadshows(bid):
+	roadshows = FlashFundIPO.query.filter_by(
+		status='roadshow',
+		business_id=bid,
+	).all()
+
+	def get_company_name_by_bid(id):
+		b = Business.query.filter_by(id=id).first()
+		return b.company_name
+		
+	jsonbody = {
+		'roadshows': [{
+			'company_name': get_company_name_by_bid(x.business_id),
+			'status': x.status,
+			'proposed_valuation': x.valuation,
+			'public_valuation': x.getAverageValuation(),
+			'loan_amount': x.loan_amount,
+		} for x in roadshows]
+	}
+	return jsonify(jsonbody), 200
+
+	# data = request.json
+	# if(data == None or data == ''):
+	# 	return jsonify({
+	# 		'error':'Invalid Request Body',
+	# 	}), 400
+	# b = Investor.query.filter_by(email=data['email'], password=data['password']).first()
+	# if(b == None):
+	# 	return jsonify({
+	# 		'success': False,
+	# 		'message': 'Investor Not Found'
+	# 	})
+	# return jsonify({
+	# 	'success': True,
+	# 	'id': b.id
+	# })
