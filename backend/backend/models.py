@@ -67,8 +67,9 @@ class VirtualWallet(db.Model):
 	def withdraw(self, amount):
 		if(amount > self.balance):
 			print('Cannot Withdraw more than balance')
-			return
+			return False
 		self.balance = self.balance - amount
 		print(f"Withdrew {amount} from VirtualWallet")
 		db.session.commit()
+		return True
 
