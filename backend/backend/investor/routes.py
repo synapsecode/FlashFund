@@ -93,18 +93,23 @@ def roadshows():
 	}
 	return jsonify(jsonbody), 200
 
-	# data = request.json
-	# if(data == None or data == ''):
-	# 	return jsonify({
-	# 		'error':'Invalid Request Body',
-	# 	}), 400
-	# b = Investor.query.filter_by(email=data['email'], password=data['password']).first()
-	# if(b == None):
-	# 	return jsonify({
-	# 		'success': False,
-	# 		'message': 'Investor Not Found'
-	# 	})
-	# return jsonify({
-	# 	'success': True,
-	# 	'id': b.id
-	# })
+@investor.route("/all_ipos")
+def all_ipos():
+	all_ipos = FlashFundIPO.query.filter_by(
+		status='ipo',
+	).all()
+
+	def get_company_name_by_bid(id):
+		b = Business.query.filter_by(id=id).first()
+		return b.company_name
+		
+	jsonbody = {
+		'ipos': [{
+			'company_name': get_company_name_by_bid(x.business_id),
+			'status': x.status,
+			'proposed_valuation': x.valuation,
+			'public_valuation': x.getAverageValuation(),
+			'loan_amount': x.loan_amount,
+		} for x in all_ipos]
+	}
+	return jsonify(jsonbody), 200

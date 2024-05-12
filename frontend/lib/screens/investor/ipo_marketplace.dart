@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/backend/auth.dart';
+import 'package:frontend/backend/roadshow.dart';
 import 'package:frontend/backend/wallet.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
@@ -16,24 +17,19 @@ class IPOMarketplacePage extends StatefulWidget {
 }
 
 class _IPOMarketplacePageState extends State<IPOMarketplacePage> {
-  List<RoadshowModel> ipos = [
-    RoadshowModel(
-      id: 0,
-      companyName: 'Acme Corp',
-      prospectusURL: 'https://www.google.com',
-      companyValuation: 4853858585,
-      loanAmount: 240000,
-      status: 'IPO',
-    ),
-    RoadshowModel(
-      id: 1,
-      companyName: 'Bagmane Group',
-      prospectusURL: 'https://www.bagmane.com',
-      companyValuation: 5999858585,
-      loanAmount: 320000,
-      status: 'IPO',
-    ),
-  ];
+  List<RoadshowModel> ipos = [];
+
+  @override
+  void initState() {
+    RoadshowBackend.getAllIPOs().then((x) {
+      if (x == null) return print('NULLLLLL');
+      setState(() {
+        ipos = [...x];
+        setState(() {});
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +113,16 @@ class _IPOWidgetState extends State<IPOWidget> {
                         final amount = (units *
                                 double.parse(widget.model.getValueOfEachShare))
                             .toInt();
-                        ;
+
                         final id = gpc.read(investorUserIDProvider)!;
-                        await VirtualWallet.withdraw(
+                        final success = await VirtualWallet.withdraw(
                           type: 'investor',
                           amount: amount,
                           id: id,
                         );
+                        if (success) {
+                          //todo: call the buy share route
+                        }
                       },
                       child: Text('Place Order'))
                   .addLeftMargin(20),

@@ -32,4 +32,11 @@ class RoadshowBackend {
         (res['roadshows']!).map((x) => RoadshowModel.fromMap(x)).toList();
     return roadshows;
   }
+
+  static Future<List?> getAllIPOs() async {
+    final res = await interceptor.get('$SERVER/investor/all_ipos');
+    if (res == null) return null;
+    final ipos = (res['ipos']!).map((x) => RoadshowModel.fromMap(x)).toList();
+    return ipos;
+  }
 }
