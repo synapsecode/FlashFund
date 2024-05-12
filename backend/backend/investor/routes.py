@@ -110,6 +110,29 @@ def all_ipos():
 			'proposed_valuation': x.valuation,
 			'public_valuation': x.getAverageValuation(),
 			'loan_amount': x.loan_amount,
+			'shares_left': x.shares_left,
+			'business_id': x.business_id,
 		} for x in all_ipos]
 	}
 	return jsonify(jsonbody), 200
+
+	
+@investor.route("/place_order", methods=['POST'])
+def place_order():
+	data = request.json
+
+	business_id = data['business_id']
+	units = data['units']
+
+	flashfund = FlashFundIPO.query.filter_by(business_id=business_id).first()
+	success = flashfund.purchase_share(units)
+
+	if(not success):
+		return jsonify({
+			'success': False,
+		}), 200
+
+	return jsonify({
+		'success': True,
+		'shares_remaining': flashfund.shares_left
+	}), 200

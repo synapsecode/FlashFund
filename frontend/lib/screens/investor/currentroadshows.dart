@@ -7,11 +7,13 @@ import 'package:intl/intl.dart';
 
 class RoadshowModel {
   final int id;
+  final int businessID;
   final String companyName;
   final String prospectusURL;
   int companyValuation;
   final int loanAmount;
   final String status;
+  final int sharesLeft;
 
   double get loanPercentageAgainstValuation {
     return companyValuation == 0 ? 0 : (loanAmount / companyValuation) * 100;
@@ -28,9 +30,11 @@ class RoadshowModel {
   RoadshowModel({
     required this.id,
     required this.companyName,
+    required this.businessID,
     required this.prospectusURL,
     required this.companyValuation,
     required this.loanAmount,
+    required this.sharesLeft,
     required this.status,
   });
 
@@ -42,6 +46,8 @@ class RoadshowModel {
       companyValuation: x['proposed_valuation'],
       loanAmount: x['loan_amount'],
       status: x['status'],
+      sharesLeft: x['shares_left'],
+      businessID: x['business_id'],
     );
   }
 }

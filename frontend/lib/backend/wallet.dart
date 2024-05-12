@@ -36,14 +36,15 @@ class VirtualWallet {
     );
     if (res == null) {
       print('Some Error Occured!');
-      return;
+      return false;
     }
     final balance = res['balance'];
     if (balance == null) {
       print('No Balance Found');
-      return;
+      return false;
     }
     gpc.read(currentWalletBalance.notifier).state = balance;
+    return true;
   }
 
   static Future<double?> getBalance({

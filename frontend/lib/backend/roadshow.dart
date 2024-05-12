@@ -39,4 +39,23 @@ class RoadshowBackend {
     final ipos = (res['ipos']!).map((x) => RoadshowModel.fromMap(x)).toList();
     return ipos;
   }
+
+  static Future<bool> placeOrder({
+    required int businessID,
+    required int units,
+  }) async {
+    // final bid = gpc.read(businessUserIDProvider)!;
+    final body = {
+      "business_id": businessID,
+      "units": units,
+    };
+    final res = await interceptor.post(
+      '$SERVER/investor/place_order',
+      body: body,
+    );
+    if (res == null) {
+      return false;
+    }
+    return true;
+  }
 }

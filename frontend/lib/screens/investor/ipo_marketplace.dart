@@ -7,6 +7,7 @@ import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/screens/investor/currentroadshows.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class IPOMarketplacePage extends StatefulWidget {
@@ -122,6 +123,17 @@ class _IPOWidgetState extends State<IPOWidget> {
                         );
                         if (success) {
                           //todo: call the buy share route
+
+                          final succ = await RoadshowBackend.placeOrder(
+                            businessID: widget.model.businessID,
+                            units: units.toInt(),
+                          );
+                          if (succ) {
+                            print('MOGGGGGEDDDDDD');
+                            context.pop();
+                          } else {
+                            print('UUUUUUUUUUUU');
+                          }
                         }
                       },
                       child: Text('Place Order'))
@@ -137,6 +149,7 @@ class _IPOWidgetState extends State<IPOWidget> {
                   "Loan Amount: ₹${NumberFormat('#,##,000').format(widget.model.loanAmount)}"),
               Text("Value Per Share: ${widget.model.getValueOfEachShare}"),
               Text("Status: ${widget.model.status}"),
+              Text("Shares Left: ${widget.model.sharesLeft}"),
             ],
           )
         ],
