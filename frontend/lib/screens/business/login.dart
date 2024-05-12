@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
+import 'package:go_router/go_router.dart';
 
 class BusinessLoginScreen extends StatefulWidget {
   const BusinessLoginScreen({super.key});
@@ -45,7 +46,12 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
               onTap: () {},
               textColor: Colors.white,
             ).addBottomMargin(30),
-            TextButton(onPressed: () {}, child: Text('Create Account'))
+            TextButton(
+              onPressed: () {
+                context.push('/business/onboarding');
+              },
+              child: Text('Create Account'),
+            )
           ],
         ).limitSize(400),
       ).center(),

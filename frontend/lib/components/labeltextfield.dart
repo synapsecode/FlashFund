@@ -11,6 +11,7 @@ class LableTextField extends StatefulWidget {
   final Function(List<String>)? updateselectedItems;
   final int? maxLength;
   final String? characterAllowed;
+  final bool dropdownAlwaysOpen;
   final bool hideInput;
   const LableTextField(
       {Key? key,
@@ -21,6 +22,7 @@ class LableTextField extends StatefulWidget {
       this.isMultiselect = false,
       this.updateselectedItems,
       this.maxLength,
+      this.dropdownAlwaysOpen = false,
       this.characterAllowed,
       this.hideInput = false})
       : super(key: key);
@@ -39,13 +41,19 @@ class _LableTextFieldState extends State<LableTextField> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        isDropDownOpen = true;
-      } else {
-        isDropDownOpen = false;
-      }
-    });
+
+    isDropDownOpen = widget.dropdownAlwaysOpen;
+
+    if (widget.dropdownAlwaysOpen) {
+      focusNode.addListener(() {
+        if (focusNode.hasFocus) {
+          isDropDownOpen = true;
+        } else {
+          isDropDownOpen = false;
+        }
+      });
+    }
+
     if (widget.isDropDown && widget.dropdownList != null) {
       suggetionList = widget.dropdownList!;
     }
