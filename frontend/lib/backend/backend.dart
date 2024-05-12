@@ -6,7 +6,7 @@ import 'package:frontend/routes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String SERVER = "http://192.168.171.174:3000";
+const String SERVER = "http://172.20.10.3:3000";
 
 loadAllControllers() async {
   final prefs = await SharedPreferences.getInstance();

@@ -87,8 +87,10 @@ def roadshows():
 			'company_name': get_company_name_by_bid(x.business_id),
 			'status': x.status,
 			'proposed_valuation': x.valuation,
+			'shares_left': x.shares_left,
 			'public_valuation': x.getAverageValuation(),
 			'loan_amount': x.loan_amount,
+			'business_id': x.business_id,
 		} for x in roadshows]
 	}
 	return jsonify(jsonbody), 200
