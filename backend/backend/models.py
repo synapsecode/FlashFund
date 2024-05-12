@@ -136,7 +136,7 @@ class FlashFundIPO(db.Model):
 		self.shares_left = self.shares_left - units
 		
 		#find the total amount to transfer (units * shareprice)
-		shareprice = self.loan_amount/self.valuation
+		shareprice = self.loan_amount/1_000_000
 		print(f'Using Shareprice {shareprice} Rupees')
 
 		transferamount = units * shareprice
