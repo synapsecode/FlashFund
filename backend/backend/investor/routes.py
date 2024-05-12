@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, jsonify
 from backend import db
-from backend.models import Investor
+from backend.models import Investor, VirtualWallet
 investor = Blueprint('investor', __name__)
 from flask_cors import CORS
 CORS(investor)
@@ -35,6 +35,20 @@ def register():
 	)
 	db.session.add(b)
 	db.session.commit()
+
+	b = Investor.query.filter_by(email=email).first()
+
+	#Create VirtualWallet
+	vw = VirtualWallet(
+		business_id=None,
+		investor_id=b.id,
+	)
+	db.session.add(vw)
+	db.session.commit()
+
+	print('Virtual Wallet Created for Investor!')
+
+
 	return jsonify({
 		'status': 'OK',
 		'message': 'investor created!',

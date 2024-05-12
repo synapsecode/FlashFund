@@ -44,3 +44,31 @@ class Business(db.Model):
 
 	def __repr__(self):
 		return f"Business({self.name}, {self.email})"
+	
+class VirtualWallet(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	business_id = db.Column(db.Integer)
+	investor_id = db.Column(db.Integer)
+	balance = db.Column(db.Float)
+
+	def __init__(self, investor_id, business_id):
+		self.balance = 0
+		self.investor_id = investor_id
+		self.business_id = business_id
+
+	def __repr__(self):
+		return f"VirtualWallet({self.investor_id}, {self.business_id}, {self.balance})"
+	
+	def deposit(self, amount):
+		self.balance = self.balance + amount
+		print(f"deposited {amount} into VirtualWallet")
+		db.session.commit()
+
+	def withdraw(self, amount):
+		if(amount > self.balance):
+			print('Cannot Withdraw more than balance')
+			return
+		self.balance = self.balance - amount
+		print(f"Withdrew {amount} from VirtualWallet")
+		db.session.commit()
+
