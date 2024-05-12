@@ -3,11 +3,6 @@ from datetime import datetime
 from flask import current_app
 from backend import db
 
-class TestModel(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	test_name = db.Column(db.String)
-
-
 class Investor(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String)
