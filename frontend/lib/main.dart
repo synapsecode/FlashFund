@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:frontend/backend/backend.dart';
 import 'package:frontend/extensions/extensions.dart';
 import 'package:frontend/extensions/miscextensions.dart';
 import 'package:frontend/routes.dart';
@@ -11,6 +12,9 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
   GoRouter.optionURLReflectsImperativeAPIs = true;
+  Future.delayed(Duration(milliseconds: 200), () {
+    loadAllControllers();
+  });
 }
 
 class MyApp extends StatelessWidget {

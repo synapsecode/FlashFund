@@ -42,7 +42,7 @@ def register():
 		'message': 'business created!',
 	}), 200
 	
-@business.route("/login")
+@business.route("/login", methods=['POST'])
 def login():
 	data = request.json
 	if(data == None or data == ''):

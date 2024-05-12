@@ -40,7 +40,7 @@ def register():
 		'message': 'investor created!',
 	}), 200
 	
-@investor.route("/login")
+@investor.route("/login", methods=['POST'])
 def login():
 	data = request.json
 	if(data == None or data == ''):

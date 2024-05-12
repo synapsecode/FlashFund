@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:frontend/backend/backend.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
@@ -67,7 +68,9 @@ class _InvestorDashboardState extends State<InvestorDashboard> {
                 Row(
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        logout(context);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red[400],
                         foregroundColor: Colors.white,

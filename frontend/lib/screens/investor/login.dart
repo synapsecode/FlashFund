@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/backend/auth.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
@@ -43,7 +44,7 @@ class _InvestorLoginScreenState extends State<InvestorLoginScreen> {
               text: 'login',
               buttonColor: Colors.purple,
               width: 400,
-              onTap: () {},
+              onTap: login,
               textColor: Colors.white,
             ).addBottomMargin(30),
             TextButton(
@@ -55,5 +56,17 @@ class _InvestorLoginScreenState extends State<InvestorLoginScreen> {
         ).limitSize(400),
       ).center(),
     );
+  }
+
+  login() async {
+    final success = await InvestorAuth.login(
+      email: usernameC.value.text,
+      password: passwordC.value.text,
+    );
+    if (success) {
+      context.push('/investor/dashboard');
+    } else {
+      print('Login Failed!');
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/backend/auth.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
@@ -99,8 +100,7 @@ class _BusinessOnboardingScreenState extends State<BusinessOnboardingScreen> {
               buttonColor: Colors.purple,
               width: 400,
               onTap: () {
-                //TODO: Implement Signup
-                context.push('/business/dashboard');
+                register();
               },
               textColor: Colors.white,
             ).addBottomMargin(30),
@@ -108,5 +108,30 @@ class _BusinessOnboardingScreenState extends State<BusinessOnboardingScreen> {
         ).addHorizontalMargin(50),
       ).center().addTopMargin(40),
     );
+  }
+
+  register() async {
+    final res = await BusinessAuth.register(
+      email: emailC.value.text,
+      password: passwordC.value.text,
+      companyAddress: companyAddrC.value.text,
+      companyName: companyNameC.value.text,
+      fundingStatus: fundingStageC.value.text,
+      legalstructure: legalStructureC.value.text,
+    );
+    if (res) {
+      //login
+      final success = await BusinessAuth.login(
+        email: emailC.value.text,
+        password: passwordC.value.text,
+      );
+      if (success) {
+        context.push('/business/dashboard');
+      } else {
+        print('Login Failed!');
+      }
+    } else {
+      print('Registration Failed!');
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/backend/auth.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
@@ -83,8 +84,7 @@ class _InvestorOnboardingScreenState extends State<InvestorOnboardingScreen> {
               buttonColor: Colors.purple,
               width: 400,
               onTap: () {
-                //TODO: Implement Signup
-                context.push('/investor/dashboard');
+                register();
               },
               textColor: Colors.white,
             ).addBottomMargin(30),
@@ -92,5 +92,30 @@ class _InvestorOnboardingScreenState extends State<InvestorOnboardingScreen> {
         ).addHorizontalMargin(50),
       ).center().addTopMargin(40),
     );
+  }
+
+  register() async {
+    final res = await InvestorAuth.register(
+      email: emailC.value.text,
+      password: passwordC.value.text,
+      name: nameC.value.text,
+      aadhar: aadharNumber.value.text,
+      address: invAddress.value.text,
+      pan: panDetailsC.value.text,
+    );
+    if (res) {
+      //login
+      final success = await InvestorAuth.login(
+        email: emailC.value.text,
+        password: passwordC.value.text,
+      );
+      if (success) {
+        context.push('/investor/dashboard');
+      } else {
+        print('Login Failed!');
+      }
+    } else {
+      print('Registration Failed!');
+    }
   }
 }

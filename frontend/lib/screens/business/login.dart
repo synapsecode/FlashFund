@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/backend/auth.dart';
 import 'package:frontend/components/labeltextfield.dart';
 import 'package:frontend/components/standardbutton.dart';
 import 'package:frontend/extensions/extensions.dart';
@@ -43,7 +44,7 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
               text: 'login',
               buttonColor: Colors.purple,
               width: 400,
-              onTap: () {},
+              onTap: login,
               textColor: Colors.white,
             ).addBottomMargin(30),
             TextButton(
@@ -56,5 +57,17 @@ class _BusinessLoginScreenState extends State<BusinessLoginScreen> {
         ).limitSize(400),
       ).center(),
     );
+  }
+
+  login() async {
+    final success = await BusinessAuth.login(
+      email: usernameC.value.text,
+      password: passwordC.value.text,
+    );
+    if (success) {
+      context.push('/business/dashboard');
+    } else {
+      print('Login Failed!');
+    }
   }
 }
